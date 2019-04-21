@@ -1,0 +1,57 @@
+# Perl code snippet for datagen.pl
+# Simple version
+# J. Jang
+# 2019-04-21
+
+#
+# (i)-(iv):  Required
+# (v)-(vii): Optional
+#
+
+# (i) Number of data columns
+$num_of_cols = 4;
+
+# (ii) Headings
+# - The number of elements must be the same as $num_of_cols assigned in (i).
+#   (assign "" where no heading is necessary)
+$heads_aref = [
+    "Reactor",
+    "Country",
+    "Global production share",
+    "Age (as of 2019)",
+];
+
+# (iii) Subheadings
+# - The number of elements must be the same as $num_of_cols assigned in (i).
+#   (assign "" where no subheading is necessary)
+$subheads_aref = [
+    "",
+    "",
+    "(%)",
+    "(y)",
+];
+
+# (iv) Columnar data
+# - The number of elements must be an integer multiple of
+#   $num_of_cols assigned in (i). For example, if $num_of_cols is 4,
+#   the number of elements of $data_aref must be 4, 8, 12, ..., etc.
+$data_aref = [
+    "LVR-15",   "Czech Rep.",  7,  62, # As of 2019
+    "HFR",      "Netherlands", 23, 57,
+    "BR-2",     "Belgium",     21, 57,
+    "SAFARI-1", "S. Africa",   13, 54,
+    "Maria",    "Poland",      9,  45,
+    "OPAL",     "Australia",   8,  12,
+];
+
+# (v) Column ordinal numbers where the sums will be calculated and appended
+# - Assign [] if not necessary.
+$sum_idx = [];
+
+# (vi) Column ordinal numbers where the data will be aligned ragged-left
+# - Assign [] if not necessary.
+$ragged_left_idx = [];
+
+# (vii) An Excel cell at which the pane will be frozen.
+# - Assign "" if not necessary.
+$freeze_panes = ""; # e.g. 'C4' or {row => 3, col => 2}

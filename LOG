@@ -1,0 +1,6 @@
+v1.01 (2019-04-21)
+> Source code renamed: dataconv --> datagen
+> Source code reorganized: columnar data are read from a Perl code snippet.
+
+v1.00 (2018-09-02)
+> Source code 'dataconv' first written

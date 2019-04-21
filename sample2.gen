@@ -1,0 +1,255 @@
+# Perl code snippet for datagen.pl
+# A bit complex version
+# J. Jang
+# 2019-04-21
+
+#
+# Preprocessing
+#
+
+# - nasem2009.pdf, pp. 38--39
+# - nasem2016.pdf, pp. 56--57
+# - nea2010.pdf, p. 35
+#   - power (thermal; nominal)
+#   - share (can vary year to year)
+#   - start (operation, not commission)
+# - nea2018.pdf, p. 28
+#   - fuel   (HEU --> LEU conversion in progress in 21C)
+#   - target (HEU --> LEU conversion in progress in 21C)
+#   - end    (estimated; operation, not commission)
+# - Enclose strings containing space characters with quotes
+#   for correct gnuplot data recognition.
+my $year_of_int = 2019;
+my $_flag = 0;
+my %nru = (
+    flag    => $_flag++,
+    name    => 'NRU',
+    country => '"Canada"',
+    name_gp => '"NRU\\n{/=16 (Canada)}"',
+    power   => 135, # MWt
+    fuel    => 'LEU',
+    target  => 'HEU',
+    # nasem2016.pdf, p. 56
+    share  => 19, # %
+    start  => 1957,
+    end    => 2018, # Mo-99 production ceased in 2016
+);
+my %lvr15 = (
+    flag    => $_flag++,
+    name    => 'LVR-15',
+    country => '"Czech Rep."',
+    name_gp => '"LVR-15\\n{/=16 (Czech Rep.)}"',
+    power   => 10,
+    fuel    => 'LEU',
+    target  => 'HEU/LEU',
+    share   => 7,
+    start   => 1957,
+    end     => 2028,
+);
+my %hfr = (
+    flag    => $_flag++,
+    name    => 'HFR',
+    country => '"Netherlands"',
+    name_gp => '"HFR\\n{/=16 (Netherlands)}"',
+    power   => 45,
+    fuel    => 'LEU',
+    target  => 'HEU/LEU',
+    share   => 23,
+    # (nasem2016.pdf, p. 56) says 1961
+    # (hfr.pdf, p. 3)        says 1962
+    start   => 1962,
+    end     => 2026,
+);
+my %br2 = (
+    flag    => $_flag++,
+    name    => 'BR-2',
+    country => '"Belgium"',
+    name_gp => '"BR-2\\n{/=16 (Belgium)}"',
+    power   => 100,
+    fuel    => 'HEU',
+    target  => 'HEU/LEU',
+    share   => 21,
+    # (br2.pdf, p. 7)     says 1961 as the "commission" year.
+    # (br2_web.pdf, p. 1) says 1962 as the "operation" year.
+    start   => 1962,
+    end     => 2026,
+);
+my %safari1 = (
+    flag    => $_flag++,
+    name    => 'SAFARI-1',
+    country => '"S. Africa"',
+    name_gp => '"SAFARI-1\\n{/=16 (S. Africa)}"',
+    power   => 20,
+    fuel    => 'LEU',
+    target  => 'LEU',
+    share   => 13,
+    start   => 1965,
+    end     => 2030,
+);
+my %osiris = (
+    flag    => $_flag++,
+    name    => 'Osiris',
+    country => '"France"',
+    name_gp => '"Osiris\\n{/=16 (France)}"',
+    power   => 70,
+    # nasem2009.pdf, p. 39
+    fuel    => 'LEU',
+    target  => 'HEU',
+    share   => 8,
+    start   => 1966,
+    end     => 2015, # Mo-99 production ceased in 2009
+);
+my %maria = (
+    flag    => $_flag++,
+    name    => 'Maria',
+    country => '"Poland"',
+    name_gp => '"Maria\\n{/=16 (Poland)}"',
+    power   => 30,
+    fuel    => 'LEU',
+    target  => 'LEU',
+    share   => 9,
+    start   => 1974,
+    end     => 2030,
+);
+my %opal = (
+    flag    => $_flag++,
+    name    => 'OPAL',
+    country => '"Australia"',
+    name_gp => '"OPAL\\n{/=16 (Australia)}"',
+    power   => 20,
+    fuel    => 'LEU',
+    target  => 'LEU',
+    share   => 8,
+    # (nasem2016.pdf, p. 56) says 2006
+    # (opal.pdf, p. 1) says 2007 as the "operation" year.
+    start   => 2007,
+    end     => 2057,
+);
+my %reactors = (
+    nru     => \%nru,
+    lvr15   => \%lvr15,
+    hfr     => \%hfr,
+    br2     => \%br2,
+    safari1 => \%safari1,
+    osiris  => \%osiris,
+    maria   => \%maria,
+    opal    => \%opal,
+);
+
+
+#
+# (i)-(iv):  Required
+# (v)-(vii): Optional
+#
+
+# (i) Number of data columns
+$num_of_cols = 13;
+
+# (ii) Headings
+# - The number of elements must be the same as $num_of_cols assigned in (i).
+#   (assign "" where no heading is necessary)
+$heads_aref = [
+    "Flag",
+    "Reactor",
+    "Country",
+    "Reactor and country",
+    "Status",
+    "Thermal power",
+    "Fuel type",
+    "Target type",
+    "Global share",
+    "Operation start",
+    "Operation period",
+    "Operation end",
+    "Remaining life",
+];
+
+# (iii) Subheadings
+# - The number of elements must be the same as $num_of_cols assigned in (i).
+#   (assign "" where no subheading is necessary)
+$subheads_aref = [
+    "",
+    "",
+    "",
+    "(for gnuplot)",
+    "(bool)",
+    "(MWt)",
+    sprintf("(As of %s)", $year_of_int),
+    sprintf("(As of %s)", $year_of_int),
+    "(%)",
+    "(y)",
+    "(y)",
+    "(y)",
+    "(y)",
+];
+
+# (iv) Columnar data
+# - The number of elements must be an integer multiple of
+#   $num_of_cols assigned in (i). For example, if $num_of_cols is 13,
+#   the number of elements of $data_aref must be 13, 26, 39, ..., etc.
+map {
+    push @$data_aref, 
+        $reactors{$_}{flag},
+        $reactors{$_}{name},
+        $reactors{$_}{country},
+        $reactors{$_}{name_gp},
+        (
+            $year_of_int >= $reactors{$_}{start}
+            and $year_of_int < $reactors{$_}{end}
+        ) ? 1 : 0,
+        $reactors{$_}{power},
+        $reactors{$_}{fuel},
+        $reactors{$_}{target},
+        $reactors{$_}{share},
+        $reactors{$_}{start},
+        (
+            # "At and after" the end of operation: [The actual service life]
+            $year_of_int >= $reactors{$_}{end} ?
+                $reactors{$_}{end} - $reactors{$_}{start} :
+                # "Before" the end of operation
+                # and "at and after" the start year: [The "actual" age]
+                (
+                    $year_of_int < $reactors{$_}{end}
+                    and $year_of_int >= $reactors{$_}{start}
+                ) ? $year_of_int - $reactors{$_}{start} :
+                    # "Before" the start year: [Ageless]
+                    0
+        ),
+        $reactors{$_}{end},
+        (
+            # "At and after" the end of operation: [No more life]
+            $year_of_int >= $reactors{$_}{end} ?
+                0 :
+                # "At and before" the start year: [The "designed" age]
+                $year_of_int <= $reactors{$_}{start} ?
+                    $reactors{$_}{end} - $reactors{$_}{start} :
+                    # "After" the start year and
+                    # "Before" the end of operation:
+                    # [The actual remaining life]
+                    $reactors{$_}{end} - $year_of_int
+        );
+} qw(
+    nru
+    lvr15
+    hfr
+    br2
+    safari1
+    osiris
+    maria
+    opal
+);
+
+# (v) Column ordinal numbers where the sums will be calculated and appended
+# - Assign [] if not necessary.
+$sum_idx = [8];
+
+# (vi) Column ordinal numbers where the data will be aligned ragged-left
+# - Assign [] if not necessary.
+$ragged_left_idx = [4..12];
+
+# (vii) An Excel cell at which the pane will be frozen.
+# - Assign "" if not necessary.
+$freeze_panes = 'E4'; # e.g. 'E4' or {row => 3, col => 4}
+
+# Further customization: Appended the year of interest.
+$run_opts_href->{dat_bname} = $run_opts_href->{dat_bname}.$year_of_int;
