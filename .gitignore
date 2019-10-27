@@ -1,0 +1,23 @@
+# github archive
+github/
+
+# datagen records
+bak_datagen.pl/
+datagen_baker.bat
+bak_sample1.gen/
+bak_sample2.gen/
+bak_sample3.gen/
+sample_baker.bat
+sample1.gen
+sample2.gen
+sample3.gen
+old_samples/
+
+# MSWin link files
+*.lnk
+
+# POD-related
+datagen_usage.bat
+datagen.html
+pod2htmd.tmp
+datagen_pod2html.bat
