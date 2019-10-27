@@ -1,0 +1,25 @@
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# datagen - Generate data in multiple formats
+# datagen v1.02 (2019-05-16)
+# Perl v5.26.2
+# Current time: 2019-10-27 12:40:26
+#
+# Jaewoong Jang
+# jangj@korea.ac.kr
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Flag | Reactor  | Country       | Reactor and country            | Status | Thermal power | Fuel type    | Target type  | Global share | Operation start | Operation period | Operation end | Remaining life
+#      |          |               | (for gnuplot)                  | (bool) | (MWt)         | (As of 2019) | (As of 2019) | (%)          | (y)             | (y)              | (y)           | (y)           
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0        NRU        "Canada"        "NRU\n{/=16 (Canada)}"                0             135            LEU            HEU             19              1957                 61            2018                0
+1        LVR-15     "Czech Rep."    "LVR-15\n{/=16 (Czech Rep.)}"         1              10            LEU        HEU/LEU              7              1957                 62            2028                9
+2        HFR        "Netherlands"   "HFR\n{/=16 (Netherlands)}"           1              45            LEU        HEU/LEU             23              1962                 57            2026                7
+3        BR-2       "Belgium"       "BR-2\n{/=16 (Belgium)}"              1             100            HEU        HEU/LEU             21              1962                 57            2026                7
+4        SAFARI-1   "S. Africa"     "SAFARI-1\n{/=16 (S. Africa)}"        1              20            LEU            LEU             13              1965                 54            2030               11
+5        Osiris     "France"        "Osiris\n{/=16 (France)}"             0              70            LEU            HEU              8              1966                 49            2015                0
+6        Maria      "Poland"        "Maria\n{/=16 (Poland)}"              1              30            LEU            LEU              9              1974                 45            2030               11
+7        OPAL       "Australia"     "OPAL\n{/=16 (Australia)}"            1              20            LEU            LEU              8              2007                 12            2057               38
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#                                                                                                                     Sum:           108 
+#eof
