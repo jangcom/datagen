@@ -1,14 +1,10 @@
-# github archive
-github/
-
 # datagen records
 bak_datagen.pl/
-datagen_baker.bat
 bak_sample1.gen/
 bak_sample2.gen/
 bak_sample3.gen/
-sample_baker.bat
-old_samples/
+datagen_baker.bat
+samples_baker.bat
 
 # MSWin link files
 *.lnk
